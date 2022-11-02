@@ -1,0 +1,119 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target arm64-apple-ios12.1 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name BlokSecFramework
+import ArcBlockSDK
+@_exported import BlokSecFramework
+import CommonCrypto
+import CoreImage
+import CryptoSwift
+import Foundation
+import KeychainSwift
+import Swift
+import UIKit
+import web3swift
+public struct BSRegistrationRequest {
+  public init(did: Swift.String?, deviceToken: Swift.String?, user: BlokSecFramework.BSUser?)
+}
+@_hasMissingDesignatedInitializers public class BSAccount {
+  public var application: BlokSecFramework.BSApplication?
+  public var accountName: Swift.String?
+  @objc deinit
+}
+public struct BSApplication {
+  public var applicationId: Swift.String?
+  public var name: Swift.String?
+  public var createdDate: Swift.String?
+  public var logoUri: Swift.String?
+}
+extension NSError {
+  public static func restNetworkErrorWithCode(errorCode: Swift.Int, message: Swift.String) -> Foundation.NSError
+}
+@_hasMissingDesignatedInitializers public class BSUser {
+  public var userId: Swift.String?
+  public var firstName: Swift.String?
+  public var lastName: Swift.String?
+  public var email: Swift.String?
+  public var mobile: Swift.String?
+  public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class BSAccountRequest {
+  public var user: BlokSecFramework.BSUser?
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class BSPersistenceManager {
+  public static let shared: BlokSecFramework.BSPersistenceManager
+  public var userAccountExists: Swift.Bool {
+    get
+  }
+  public func saveUserId(userID: Swift.String)
+  public func saveSeed(_ seed: Foundation.Data)
+  public func clear()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class BSUserProfile {
+  public var firstName: Swift.String?
+  public var lastName: Swift.String?
+  public var email: Swift.String?
+  public var mobile: Swift.String?
+  public var accounts: [BlokSecFramework.BSAccount]
+  @objc deinit
+}
+public typealias BlokSecSDKStartCompletion = (Swift.String?) -> Swift.Void
+public typealias RegistrationDetailsResponse = (BlokSecFramework.BSAccountRequest?, Swift.Error?) -> Swift.Void
+public typealias CreateAccountResponse = (BlokSecFramework.BSAccount?, Swift.Error?) -> Swift.Void
+public typealias AuthenticateUserResponse = (Swift.Bool) -> Swift.Void
+public typealias UserProfileCompletion = (BlokSecFramework.BSUserProfile?, Swift.Error?) -> Swift.Void
+public typealias AuthenticateRequestResponse = (BlokSecFramework.BSAuthenticationRequest?, Swift.Error?) -> Swift.Void
+public protocol BlokSecSDK {
+  func registerUser(request: BlokSecFramework.BSRegistrationRequest, withCompletion completion: BlokSecFramework.BlokSecSDKStartCompletion?)
+  func getRegistrationDetails(registrationId: Swift.String, completion: @escaping BlokSecFramework.RegistrationDetailsResponse)
+  func completeRegistration(accountRequest: BlokSecFramework.BSAccountRequest, completion: @escaping BlokSecFramework.CreateAccountResponse)
+  func getAuthenticationRequest(requestId: Swift.String, completion: @escaping BlokSecFramework.AuthenticateRequestResponse)
+  func sendAuthenticationResponse(authRequest: BlokSecFramework.BSAuthenticationRequest, completion: @escaping BlokSecFramework.AuthenticateUserResponse)
+  func getUserProfile(withCompletion completion: @escaping BlokSecFramework.UserProfileCompletion)
+  func createBackupQRCode(withPass passphrase: Swift.String) -> UIKit.UIImage?
+  func restoreFromQRCode(_ qrInfo: Swift.String, usingPassPhrase passphrase: Swift.String, inDevice deviceToken: Swift.String?, withCompletion completion: @escaping BlokSecFramework.UserProfileCompletion) throws
+}
+@_hasMissingDesignatedInitializers public class BSAuthenticationRequest {
+  public var context: BlokSecFramework.BSRequestContext?
+  public var authAction: BlokSecFramework.BSAuthenticationAction
+  public var isRequestExpired: Swift.Bool {
+    get
+  }
+  public func getAuthAction() -> BlokSecFramework.BSAuthenticationAction
+  @objc deinit
+}
+public struct BSRequestContext {
+  public var accountName: Swift.String?
+  public var requestSummary: Swift.String?
+  public var verificationPrompt: Swift.String?
+  public var logoImage: Swift.String?
+  public var applicationName: Swift.String?
+  public var requestContext: Swift.String?
+}
+public struct BlokSec : BlokSecFramework.BlokSecSDK {
+  public static let shared: BlokSecFramework.BlokSecSDK?
+  public func registerUser(request: BlokSecFramework.BSRegistrationRequest, withCompletion completion: BlokSecFramework.BlokSecSDKStartCompletion? = nil)
+  public func getRegistrationDetails(registrationId: Swift.String, completion: @escaping BlokSecFramework.RegistrationDetailsResponse)
+  public func completeRegistration(accountRequest: BlokSecFramework.BSAccountRequest, completion: @escaping BlokSecFramework.CreateAccountResponse)
+  public func getAuthenticationRequest(requestId: Swift.String, completion: @escaping BlokSecFramework.AuthenticateRequestResponse)
+  public func sendAuthenticationResponse(authRequest: BlokSecFramework.BSAuthenticationRequest, completion: @escaping BlokSecFramework.AuthenticateUserResponse)
+  public func getUserProfile(withCompletion completion: @escaping BlokSecFramework.UserProfileCompletion)
+  public func createBackupQRCode(withPass passphrase: Swift.String) -> UIKit.UIImage?
+  public func restoreFromQRCode(_ qrInfo: Swift.String, usingPassPhrase passphrase: Swift.String, inDevice deviceToken: Swift.String?, withCompletion completion: @escaping BlokSecFramework.UserProfileCompletion) throws
+}
+public enum BSAuthenticationAction : Swift.String {
+  case authenticate
+  case denied
+  case validationFailedNbf
+  case validationFailedSub
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+}
+extension BlokSecFramework.BSAuthenticationAction : Swift.Equatable {}
+extension BlokSecFramework.BSAuthenticationAction : Swift.Hashable {}
+extension BlokSecFramework.BSAuthenticationAction : Swift.RawRepresentable {}

@@ -1,0 +1,11 @@
+framework module BlokSecFramework {
+  umbrella header "BlokSecFramework.h"
+
+  export *
+  module * { export * }
+}
+
+module BlokSecFramework.Swift {
+    header "BlokSecFramework-Swift.h"
+    requires objc
+}
